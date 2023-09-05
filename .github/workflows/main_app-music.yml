@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: registre0conteneur.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_df54a27e5eaa4987bd419a9feb3d9da4 }}/img-music:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./docker/dockerfile
 
   deploy:
     runs-on: ubuntu-latest
