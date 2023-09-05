@@ -1,0 +1,13 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ../
+      dockerfile: ./docker/img_streamlit
+    image: registre0conteneur.azurecr.io/img-music
+    container_name: appmusic
+    ports:
+      - 8501:8501
+    volumes:
+      - ../app:/app
+  
