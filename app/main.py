@@ -104,7 +104,7 @@ def process_and_display_results(extract_paths):
 
 
 # Titre de l'application
-st.title("Identification de ")
+st.title("Identification de g")
 
 upload_folder = "audio_files"
 os.makedirs(upload_folder, exist_ok=True)
