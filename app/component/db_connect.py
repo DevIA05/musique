@@ -3,7 +3,6 @@ import os
     
     
 def insert_genre(genre):
-    print(os.environ['DBNAME'],)
     try:
     
         conn = psycopg2.connect(

@@ -4,6 +4,9 @@ from keras.models import load_model
 import joblib
 import pandas as pd
 from component.Azure_Endpoint import AutoML
+import warnings
+
+warnings.filterwarnings("ignore")
 
 
 genres = ['Blues', 'Classique', 'Country', 'Disco', 'Hiphop', 

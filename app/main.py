@@ -10,6 +10,7 @@ from component.convert import convert_mp3_to_wav
 from component.db_connect import insert_genre
 import concurrent.futures
 
+
 # Capture l'erreur si le package dotenv n'est pas installé.
 # Si non execute le code 
 try:
@@ -59,17 +60,27 @@ def process_and_display_results(extract_paths):
     top_genres_lists = []
     prediction_percentages_lists = []
     top_genres_azure = []
-
+    
     for extract_path in extract_paths:
         with st.spinner("Classification en cours ..."):
-            top_genres, prediction_percentages = predict_top_genres(extract_path, top_n=3)
-            result_autoML = predict_ML(extract_path)
-        
+            result_autoML = predict_ML(extract_path)    
+            
+        top_genres_azure.append(result_autoML)
+    
+    def predict_extract(extract_path):
+        top_genres, prediction_percentages = predict_top_genres(extract_path, top_n=3)
+        return top_genres, prediction_percentages
+
+    # Use ThreadPoolExecutor to run predictions concurrently
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = [executor.submit(predict_extract, extract_path) for extract_path in extract_paths]
+
+    for future in concurrent.futures.as_completed(futures):
+        top_genres, prediction_percentages= future.result()
         top_genres_lists.append(top_genres)
         prediction_percentages_lists.append(prediction_percentages)
-        top_genres_azure.append(result_autoML)
 
-        # st.audio(extract_path, format='audio/wav')
+
     most_frequent_class = max(set(top_genres_azure), key=top_genres_azure.count)
     
  
@@ -122,7 +133,7 @@ if uploaded_file is not None:
     audio_duration_ms = len(audio)
 
     if audio_duration_ms > 30 * 1000:
-        num_random_extracts = 5 
+        num_random_extracts = 5
         extract_paths = generate_random_extracts(audio, num_random_extracts)
         process_and_display_results(extract_paths)
     else:
