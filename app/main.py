@@ -7,6 +7,8 @@ import random
 from pydub import AudioSegment
 from component.pred import predict_top_genres, predict_ML, genres
 from component.convert import convert_mp3_to_wav
+from component.db_connect import insert_genre
+import concurrent.futures
 
 # Capture l'erreur si le package dotenv n'est pas installé.
 # Si non execute le code 
@@ -132,7 +134,7 @@ if uploaded_file is not None:
         submitted = st.form_submit_button("Valider")
 
     if submitted:
-        st.write(f"genre: {selected_genre}")
+        insert_genre(selected_genre)
 
         if uploaded_file:
             uploaded_file_name = uploaded_file.name
