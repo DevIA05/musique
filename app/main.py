@@ -71,14 +71,14 @@ def process_and_display_results(extract_paths):
         top_genres, prediction_percentages = predict_top_genres(extract_path, top_n=3)
         return top_genres, prediction_percentages
 
-    
-    with concurrent.futures.ThreadPoolExecutor(max_workers=None) as executor:
-        futures = [executor.submit(predict_extract, extract_path) for extract_path in extract_paths]
+    with st.spinner("Classification en cours ..."):
+        with concurrent.futures.ThreadPoolExecutor(max_workers=None) as executor:
+            futures = [executor.submit(predict_extract, extract_path) for extract_path in extract_paths]
 
-    for future in concurrent.futures.as_completed(futures):
-        top_genres, prediction_percentages= future.result()
-        top_genres_lists.append(top_genres)
-        prediction_percentages_lists.append(prediction_percentages)
+        for future in concurrent.futures.as_completed(futures):
+            top_genres, prediction_percentages= future.result()
+            top_genres_lists.append(top_genres)
+            prediction_percentages_lists.append(prediction_percentages)
 
 
     # most_frequent_class = max(set(top_genres_azure), key=top_genres_azure.count)
@@ -133,7 +133,7 @@ if uploaded_file is not None:
     audio_duration_ms = len(audio)
 
     if audio_duration_ms > 30 * 1000:
-        num_random_extracts = 10
+        num_random_extracts = 20
         extract_paths = generate_random_extracts(audio, num_random_extracts)
         process_and_display_results(extract_paths)
     else:
