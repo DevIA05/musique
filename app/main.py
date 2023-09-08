@@ -132,7 +132,7 @@ if uploaded_file is not None:
     audio = AudioSegment.from_file(temp_file_path)
     audio_duration_ms = len(audio)
 
-    if audio_duration_ms > 30 * 1000:
+    if audio_duration_ms > 31 * 1000:
         num_random_extracts = 20
         extract_paths = generate_random_extracts(audio, num_random_extracts)
         process_and_display_results(extract_paths)
@@ -143,7 +143,6 @@ if uploaded_file is not None:
     with st.form("Genre"):
         selected_genre = st.selectbox("Genre:", genres)
         submitted = st.form_submit_button("Valider")
-
     if submitted:
         insert_genre(selected_genre)
 
