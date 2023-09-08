@@ -29,7 +29,7 @@ def create_temp_directory():
 def save_uploaded_file(uploaded_file, temp_dir):
     temp_file_path = os.path.join(temp_dir.name, uploaded_file.name)
     
-    if uploaded_file.name.endswith(".mp3"):
+    if uploaded_file.name.endswith(".mp3") or uploaded_file.name.endswith(".m4a"):
         convert_mp3_to_wav(uploaded_file, temp_file_path)
 
     elif uploaded_file.name.endswith(".wav"):
@@ -122,7 +122,7 @@ st.title("Identification de genres musicaux")
 upload_folder = "audio_files"
 os.makedirs(upload_folder, exist_ok=True)
 
-uploaded_file = st.file_uploader("Uploader un extrait audio", type=["wav", "mp3"])
+uploaded_file = st.file_uploader("Uploader un extrait audio", type=["wav", "mp3","m4a"])
 
 if uploaded_file is not None:
     temp_dir = create_temp_directory()
